@@ -1,6 +1,6 @@
-# win-exec
+# wf-exec
 
-[![AppVeyor](https://img.shields.io/appveyor/ci/WebFolder/win-exec.svg?label=Windows)](https://ci.appveyor.com/project/WebFolder/win-exec) [![License](https://img.shields.io/badge/license-Apache-blue.svg)](https://github.com/webfolderio/win-exec/blob/master/LICENSE)
+[![AppVeyor](https://img.shields.io/appveyor/ci/WebFolder/wf-exec.svg?label=Windows)](https://ci.appveyor.com/project/WebFolder/wf-exec) [![License](https://img.shields.io/badge/license-Apache-blue.svg)](https://github.com/webfolderio/wf-exec/blob/master/LICENSE)
 
 Supported Java Versions
 -----------------------
@@ -15,27 +15,27 @@ Supported Platforms
 
 How it is tested
 ----------------
-win-exec is regularly tested on [appveyor](https://ci.appveyor.com/project/WebFolder/win-exec) (Windows)
+wf-exec is regularly tested on [appveyor](https://ci.appveyor.com/project/WebFolder/wf-exec) (Windows)
 
 Integration with Maven
 ----------------------
 
-The project artifacts are available in [Maven Central Repository](https://search.maven.org/artifact/io.webfolder/win-exec).
+The project artifacts are available in [Maven Central Repository](https://search.maven.org/artifact/io.webfolder/wf-exec).
 
-To use the official release of win-exec, please use the following snippet in your `pom.xml` file.
+To use the official release of wf-exec, please use the following snippet in your `pom.xml` file.
 
 Add the following to your POM's `<dependencies>` tag:
 
 ```xml
 <dependency>
     <groupId>io.webfolder</groupId>
-    <artifactId>win-exec</artifactId>
+    <artifactId>wf-exec</artifactId>
     <version>1.0.0</version>
 </dependency>
 ```
 
 License
 -------
-Licensed under the [Apache License](https://github.com/webfolderio/win-exec/blob/master/LICENSE).
+Licensed under the [Apache License](https://github.com/webfolderio/wf-exec/blob/master/LICENSE).
 
 Note: The included code from [bazel](https://github.com/bazelbuild/bazel) is licensed under [Apache](https://github.com/bazelbuild/bazel/blob/master/LICENSE).
