@@ -37,51 +37,6 @@
         </configuration>
       </plugin>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-        <version>3.2.1</version>
-        <executions>
-          <execution>
-            <phase>package</phase>
-            <goals>
-              <goal>shade</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <createSourcesJar>true</createSourcesJar>
-          <filters>
-            <filter>
-              <artifact>com.google.code.gson:gson</artifact>
-              <excludes>
-                <exclude>com/google/gson/**</exclude>
-              </excludes>
-            </filter>
-          </filters>
-          <transformers>
-            <transformer
-              implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
-            <transformer
-              implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-              <manifestEntries>
-                <Automatic-Module-Name>io.webfolder.winexec</Automatic-Module-Name>
-                <Bundle-SymbolicName>${project.groupId}.${project.artifactId}</Bundle-SymbolicName>
-                <Bundle-Name>${project.name}</Bundle-Name>
-                <Bundle-Description>win-exec</Bundle-Description>
-                <Bundle-Version>${project.version}</Bundle-Version>
-                <Built-By>WebFolder OÜ</Built-By>
-              </manifestEntries>
-            </transformer>
-          </transformers>
-          <relocations>
-            <relocation>
-              <pattern>com.google.common</pattern>
-              <shadedPattern>io.webfolder.winexec.internal.guava</shadedPattern>
-            </relocation>
-          </relocations>
-        </configuration>
-      </plugin>
-      <plugin>
         <groupId>org.sonatype.plugins</groupId>
         <artifactId>nexus-staging-maven-plugin</artifactId>
         <version>1.6.8</version>
@@ -144,32 +99,9 @@
   </distributionManagement>
   <dependencies>
     <dependency>
-      <groupId>com.google.code.gson</groupId>
-      <artifactId>gson</artifactId>
-      <version>2.8.6</version>
-    </dependency>
-    <dependency>
-      <groupId>org.zeroturnaround</groupId>
-      <artifactId>zt-zip</artifactId>
-      <version>1.13</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.zeroturnaround</groupId>
-      <artifactId>zt-exec</artifactId>
-      <version>1.11</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
-      <version>1.7.30</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>commons-io</groupId>
-      <artifactId>commons-io</artifactId>
-      <version>2.6</version>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.13</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
