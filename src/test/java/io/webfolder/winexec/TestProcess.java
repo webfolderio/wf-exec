@@ -4,6 +4,7 @@ import static com.google.devtools.build.lib.windows.WindowsSubprocessFactory.INS
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.util.Locale;
 import java.util.Scanner;
 
 import org.junit.Test;
@@ -35,6 +36,6 @@ public class TestProcess {
 
         process.destroy();
 
-        assertTrue(buffer.toString().contains("jdk"));
+        assertTrue(buffer.toString().toLowerCase(Locale.ENGLISH).contains("runtime"));
 	}
 }
