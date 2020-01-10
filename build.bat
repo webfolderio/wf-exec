@@ -1,0 +1,1 @@
+mvn clean && mvn -DskipTests package && mvn exec:java -Dexec.mainClass="io.webfolder.winexec.Extract" -Dexec.classpathScope="test" && mvn package
