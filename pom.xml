@@ -3,18 +3,18 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.webfolder</groupId>
-  <artifactId>win-exec</artifactId>
+  <artifactId>wf-exec</artifactId>
   <version>1.0.0</version>
-  <name>win-exec</name>
-  <description>win-exec</description>
+  <name>wf-exec</name>
+  <description>wf-exec</description>
   <inceptionYear>2020</inceptionYear>
-  <url>https://github.com/webfolderio/win-exec</url>
+  <url>https://github.com/webfolderio/wf-exec</url>
   <scm>
-    <url>https://github.com/webfolderio/win-exec.git</url>
+    <url>https://github.com/webfolderio/wf-exec.git</url>
   </scm>
   <developers>
     <developer>
-      <id>win-exec</id>
+      <id>wf-exec</id>
       <email>support@webfolder.io</email>
       <roles>
         <role>developer</role>
@@ -84,7 +84,7 @@
   <licenses>
     <license>
       <name>The Apache Software License, Version 2.0</name>
-      <url>https://github.com/webfolderio/win-exec/blob/master/LICENSE</url>
+      <url>https://github.com/webfolderio/wf-exec/blob/master/LICENSE</url>
     </license>
   </licenses>
   <distributionManagement>
