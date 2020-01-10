@@ -20,6 +20,8 @@ win-exec is regularly tested on [appveyor](https://ci.appveyor.com/project/WebFo
 Integration with Maven
 ----------------------
 
+The project artifacts are available in [Maven Central Repository](https://search.maven.org/artifact/io.webfolder/win-exec).
+
 To use the official release of win-exec, please use the following snippet in your `pom.xml` file.
 
 Add the following to your POM's `<dependencies>` tag:
