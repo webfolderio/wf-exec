@@ -39,13 +39,13 @@ public class Extract {
         }
 
         // install bazel
-        File bazelInstallDir = new File("bazelInstallDir");
+        File bazelInstallDir = new File("bazelInstallDir").getAbsoluteFile();
         if ( ! bazelInstallDir.exists() ) {
+        	bazelInstallDir.mkdir();
             ProcessExecutor executor = new ProcessExecutor();
             executor.command(bazel.getAbsolutePath(),
                              "--output_user_root=" + bazelInstallDir.getAbsolutePath()
                             ).execute();
-            bazelInstallDir.mkdir();
         }
 
         // find the necessary jar file and dll

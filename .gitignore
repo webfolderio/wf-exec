@@ -24,3 +24,7 @@ hs_err_pid*
 /target
 /.project
 /.settings
+/bazelInstallDir
+/bazel-2.0.0-windows-x86_64.exe
+/dependency-reduced-pom.xml
+/.classpath
