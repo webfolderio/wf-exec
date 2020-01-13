@@ -1,6 +1,7 @@
 package io.webfolder.winexec;
 
-import static com.google.devtools.build.lib.windows.WindowsSubprocessFactory.INSTANCE;
+import static java.lang.System.getProperty;
+import static java.util.Locale.ENGLISH;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
@@ -9,8 +10,11 @@ import java.util.Scanner;
 
 import org.junit.Test;
 
+import com.google.devtools.build.lib.shell.JavaSubprocessFactory;
 import com.google.devtools.build.lib.shell.Subprocess;
 import com.google.devtools.build.lib.shell.SubprocessBuilder;
+import com.google.devtools.build.lib.shell.SubprocessFactory;
+import com.google.devtools.build.lib.windows.WindowsSubprocessFactory;
 import com.google.devtools.build.lib.windows.jni.WindowsJniLoader;
 
 public class TestProcess {
@@ -19,9 +23,16 @@ public class TestProcess {
     WindowsJniLoader.loadJni();
   }
 
+  private static final String  OS_NAME  = getProperty("os.name").toLowerCase(ENGLISH);
+
+  private static final boolean WINDOWS  = OS_NAME.startsWith("windows");
+
   @Test
   public void testExecute() throws Exception {
-    SubprocessBuilder builder = new SubprocessBuilder(INSTANCE);
+      SubprocessFactory factory = WINDOWS ? WindowsSubprocessFactory.INSTANCE :
+                                            JavaSubprocessFactory.INSTANCE;
+
+    SubprocessBuilder builder = new SubprocessBuilder(factory);
     builder.setWorkingDirectory(new File("."));
 
     builder.setArgv("java.exe", "-version");

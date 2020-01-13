@@ -17,11 +17,12 @@ package com.google.devtools.build.lib.windows.jni;
 import static java.lang.System.getProperty;
 import static java.lang.System.load;
 import static java.nio.file.Files.copy;
-import static java.nio.file.Files.createDirectories;
+import static java.nio.file.Files.createDirectory;
 import static java.nio.file.Files.createFile;
 import static java.nio.file.Files.exists;
 import static java.nio.file.Paths.get;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
+import static java.util.Locale.ENGLISH;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,29 +36,35 @@ public class WindowsJniLoader {
 
   private static final String version = "1.0.2";
 
-  public static synchronized void loadJni() {
+  private static final String  OS_NAME = getProperty("os.name").toLowerCase(ENGLISH);
+
+  private static final boolean WINDOWS = OS_NAME.startsWith("windows");
+
+  private static boolean loaded;
+
+  public static synchronized boolean loadJni() {
+    if (loaded) {
+      return true;
+    }
+    if ( ! WINDOWS ) {
+      return false;
+    }
     Path libFile;
     ClassLoader cl = WindowsJniLoader.class.getClassLoader();
-    InputStream is = null;
-    try {
-      is = cl.getResourceAsStream("META-INF/windows_jni.dll");
+    try (InputStream is = cl.getResourceAsStream("META-INF/windows_jni.dll")) {
       libFile = tmpdir.resolve("win-exec-" + version).resolve("windows_jni.dll");
-      if ( ! exists(libFile) ) {
-        createDirectories(libFile.getParent());
-    	createFile(libFile);
-        copy(is, libFile, REPLACE_EXISTING);
+      if ( ! exists(libFile.getParent()) ) {
+        createDirectory(libFile.getParent());
       }
+      if ( ! exists(libFile) ) {
+        createFile(libFile);
+      }
+      copy(is, libFile, REPLACE_EXISTING);
     } catch (IOException e) {
       throw new RuntimeException(e);
-    } finally {
-      if ( is != null ) {
-        try {
-          is.close();
-        } catch (IOException e) {
-          // ignore
-        }
-      }
     }
     load(libFile.toString());
+    loaded = true;
+    return true;
   }
 }
