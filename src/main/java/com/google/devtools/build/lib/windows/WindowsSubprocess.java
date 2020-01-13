@@ -14,8 +14,6 @@
 
 package com.google.devtools.build.lib.windows;
 
-import com.google.devtools.build.lib.shell.Subprocess;
-import com.google.devtools.build.lib.windows.jni.WindowsProcesses;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -25,6 +23,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import com.google.devtools.build.lib.shell.Subprocess;
+import com.google.devtools.build.lib.windows.jni.WindowsProcesses;
 
 /**
  * A Windows subprocess backed by a native object.
@@ -104,12 +105,6 @@ public class WindowsSubprocess implements Subprocess {
         nativeStream = WindowsProcesses.INVALID;
       }
     }
-
-    @Override
-    protected void finalize() throws Throwable {
-      close();
-      super.finalize();
-    }
   }
 
   private static final AtomicInteger THREAD_SEQUENCE_NUMBER = new AtomicInteger(1);
@@ -175,14 +170,6 @@ public class WindowsSubprocess implements Subprocess {
   }
 
   @Override
-  public synchronized void finalize() throws Throwable {
-    if (nativeProcess != WindowsProcesses.INVALID) {
-      close();
-    }
-    super.finalize();
-  }
-
-  @Override
   public synchronized boolean destroy() {
     checkLiveness();
     return WindowsProcesses.terminate(nativeProcess);
@@ -228,8 +215,12 @@ public class WindowsSubprocess implements Subprocess {
   @Override
   public synchronized void close() {
     if (nativeProcess != WindowsProcesses.INVALID) {
-      stdoutStream.close();
-      stderrStream.close();
+      if ( stdoutStream != null ) {
+        stdoutStream.close();
+      }
+      if ( stderrStream != null ) {
+        stderrStream.close();
+      }
       long process = nativeProcess;
       nativeProcess = WindowsProcesses.INVALID;
       WindowsProcesses.deleteProcess(process);

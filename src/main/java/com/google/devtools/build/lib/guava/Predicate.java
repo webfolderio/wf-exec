@@ -14,8 +14,6 @@
 
 package com.google.devtools.build.lib.guava;
 
-import java.util.Objects;
-
 /**
  * Legacy version of {@link java.util.function.Predicate java.util.function.Predicate}. Determines a
  * true or false value for a given input.
