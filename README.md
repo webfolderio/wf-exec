@@ -1,5 +1,8 @@
 # wf-exec
 
+Process executor for Java which use [Win32 Job Objects](https://docs.microsoft.com/en-us/windows/win32/procthread/job-objects) on Windows platform.
+Unlike default process executor this library help you to kill child process when parent dies normally or abnormally.
+
 [![AppVeyor](https://img.shields.io/appveyor/ci/WebFolder/wf-exec.svg?label=Windows)](https://ci.appveyor.com/project/WebFolder/wf-exec) [![License](https://img.shields.io/badge/license-Apache-blue.svg)](https://github.com/webfolderio/wf-exec/blob/master/LICENSE)
 
 Supported Java Versions
@@ -8,10 +11,6 @@ Supported Java Versions
 Oracle & OpenJDK Java 8, 11.
 
 Both the JRE and the JDK are suitable for use with this library.
-
-Supported Platforms
--------------------
-* Windows 7, 8 and 10
 
 How it is tested
 ----------------
@@ -33,6 +32,10 @@ Add the following to your POM's `<dependencies>` tag:
     <version>1.0.1</version>
 </dependency>
 ```
+
+Download
+--------
+[wf-exec-1.0.1.jar](https://repo1.maven.org/maven2/io/webfolder/wf-exec/1.0.1/wf-exec-1.0.1.jar) - 159 KB
 
 Example
 -------
