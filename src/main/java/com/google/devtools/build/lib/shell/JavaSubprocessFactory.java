@@ -111,11 +111,6 @@ public class JavaSubprocessFactory implements SubprocessFactory {
       // java.lang.Process doesn't give us a way to clean things up other than #destroy(), which was
       // already called by this point.
     }
-
-    @SuppressWarnings("unused")
-	public Process getProcess() {
-      return process;
-    }
   }
 
   public static final JavaSubprocessFactory INSTANCE = new JavaSubprocessFactory();
