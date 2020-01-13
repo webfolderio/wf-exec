@@ -14,9 +14,13 @@
 
 package com.google.devtools.build.lib.windows.jni;
 
+import static java.lang.System.getProperty;
 import static java.lang.System.load;
 import static java.nio.file.Files.copy;
-import static java.nio.file.Files.createTempFile;
+import static java.nio.file.Files.createDirectories;
+import static java.nio.file.Files.createFile;
+import static java.nio.file.Files.exists;
+import static java.nio.file.Paths.get;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
 import java.io.IOException;
@@ -25,19 +29,24 @@ import java.nio.file.Path;
 
 /** Loads native code under Windows. */
 public class WindowsJniLoader {
-  private static boolean jniLoaded = false;
+
+    // temporary directory location
+  private static final Path tmpdir = get(getProperty("java.io.tmpdir")).toAbsolutePath();
+
+  private static final String version = "1.0.0";
 
   public static synchronized void loadJni() {
-    if (jniLoaded) {
-      return;
-    }
     Path libFile;
     ClassLoader cl = WindowsJniLoader.class.getClassLoader();
     InputStream is = null;
     try {
       is = cl.getResourceAsStream("META-INF/windows_jni.dll");
-      libFile = createTempFile("windows_jni", ".dll");
-      copy(is, libFile, REPLACE_EXISTING);
+      libFile = tmpdir.resolve("win-exec-" + version).resolve("windows_jni.dll");
+      if ( ! exists(libFile) ) {
+        createDirectories(libFile.getParent());
+    	createFile(libFile);
+        copy(is, libFile, REPLACE_EXISTING);
+      }
     } catch (IOException e) {
       throw new RuntimeException(e);
     } finally {
@@ -49,8 +58,6 @@ public class WindowsJniLoader {
         }
       }
     }
-    libFile.toFile().deleteOnExit();
-    load(libFile.toAbsolutePath().toString());
-    jniLoaded = true;
+    load(libFile.toString());
   }
 }

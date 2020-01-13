@@ -11,31 +11,36 @@ import org.junit.Test;
 
 import com.google.devtools.build.lib.shell.Subprocess;
 import com.google.devtools.build.lib.shell.SubprocessBuilder;
+import com.google.devtools.build.lib.windows.jni.WindowsJniLoader;
 
 public class TestProcess {
 
-	@Test
-	public void testExecute() throws Exception {
-        SubprocessBuilder builder = new SubprocessBuilder(INSTANCE);
-        builder.setWorkingDirectory(new File("."));
+  static {
+    WindowsJniLoader.loadJni();
+  }
 
-        builder.setArgv("java.exe", "-version");
+  @Test
+  public void testExecute() throws Exception {
+    SubprocessBuilder builder = new SubprocessBuilder(INSTANCE);
+    builder.setWorkingDirectory(new File("."));
 
-        StringBuilder buffer = new StringBuilder();
+    builder.setArgv("java.exe", "-version");
 
-        Subprocess process = builder.start();
-        try (Scanner scanner = new Scanner(process.getErrorStream())) {
-            while (scanner.hasNext()) {
-                String line = scanner.nextLine().trim();
-                if (line.isEmpty()) {
-                    continue;
-                }
-                buffer.append(line);
-            }
+    StringBuilder buffer = new StringBuilder();
+
+    Subprocess process = builder.start();
+    try (Scanner scanner = new Scanner(process.getErrorStream())) {
+      while (scanner.hasNext()) {
+        String line = scanner.nextLine().trim();
+        if (line.isEmpty()) {
+          continue;
         }
+        buffer.append(line);
+      }
+    }
 
-        process.destroy();
+    process.destroy();
 
-        assertTrue(buffer.toString().toLowerCase(Locale.ENGLISH).contains("runtime"));
-	}
+    assertTrue(buffer.toString().toLowerCase(Locale.ENGLISH).contains("runtime"));
+  }
 }
