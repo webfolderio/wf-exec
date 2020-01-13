@@ -30,8 +30,59 @@ Add the following to your POM's `<dependencies>` tag:
 <dependency>
     <groupId>io.webfolder</groupId>
     <artifactId>wf-exec</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
+```
+
+Example
+-------
+
+```java
+public class Example {
+
+  private static final boolean WINDOWS  = getProperty("os.name")
+                                              .toLowerCase(ENGLISH)
+                                              .startsWith("windows");
+
+  public static void main(String[] args) throws IOException {
+    // load jni library
+    WindowsJniLoader.loadJni();
+    
+    SubprocessFactory factory = WINDOWS ? WindowsSubprocessFactory.INSTANCE :
+                                          JavaSubprocessFactory.INSTANCE;
+
+    SubprocessBuilder builder = new SubprocessBuilder(factory);
+
+    builder.setWorkingDirectory(new File("."));
+
+    builder.setArgv("java.exe", "-version");
+
+    StringBuilder buffer = new StringBuilder();
+
+    Subprocess process = builder.start();
+    try (Scanner scanner = new Scanner(process.getErrorStream())) {
+      while (scanner.hasNext()) {
+        String line = scanner.nextLine().trim();
+        if (line.isEmpty()) {
+          continue;
+        }
+        buffer.append(line).append("\r\n");
+      }
+    }
+
+    // terminate the process
+    process.destroy();
+
+    while (process.finished()) {
+      // wait until process finished
+    }
+
+    // close the native resources
+    process.close();
+
+    System.out.println(buffer.toString());
+  }
+}
 ```
 
 License

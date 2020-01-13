@@ -33,7 +33,7 @@ public class WindowsJniLoader {
     // temporary directory location
   private static final Path tmpdir = get(getProperty("java.io.tmpdir")).toAbsolutePath();
 
-  private static final String version = "1.0.0";
+  private static final String version = "1.0.2";
 
   public static synchronized void loadJni() {
     Path libFile;
