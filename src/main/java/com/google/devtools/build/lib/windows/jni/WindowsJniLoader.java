@@ -34,7 +34,7 @@ public class WindowsJniLoader {
     // temporary directory location
   private static final Path tmpdir = get(getProperty("java.io.tmpdir")).toAbsolutePath();
 
-  private static final String version = "1.0.2";
+  private static final String version = "1.0.3";
 
   private static final String  OS_NAME = getProperty("os.name").toLowerCase(ENGLISH);
 
@@ -49,19 +49,20 @@ public class WindowsJniLoader {
     if ( ! WINDOWS ) {
       return false;
     }
-    Path libFile;
-    ClassLoader cl = WindowsJniLoader.class.getClassLoader();
-    try (InputStream is = cl.getResourceAsStream("META-INF/windows_jni.dll")) {
-      libFile = tmpdir.resolve("win-exec-" + version).resolve("windows_jni.dll");
-      if ( ! exists(libFile.getParent()) ) {
-        createDirectory(libFile.getParent());
-      }
-      if ( ! exists(libFile) ) {
-        createFile(libFile);
-      }
-      copy(is, libFile, REPLACE_EXISTING);
-    } catch (IOException e) {
-      throw new RuntimeException(e);
+    Path libFile = tmpdir.resolve("win-exec-" + version).resolve("windows_jni.dll");
+    if ( ! exists(libFile) ) {
+    	ClassLoader cl = WindowsJniLoader.class.getClassLoader();
+    	try (InputStream is = cl.getResourceAsStream("META-INF/windows_jni.dll")) {
+    		if ( ! exists(libFile.getParent()) ) {
+    			createDirectory(libFile.getParent());
+    		}
+    		if ( ! exists(libFile) ) {
+    			createFile(libFile);
+    		}
+    		copy(is, libFile, REPLACE_EXISTING);
+    	} catch (IOException e) {
+    		throw new RuntimeException(e);
+    	}
     }
     load(libFile.toString());
     loaded = true;
