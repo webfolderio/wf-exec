@@ -49,7 +49,7 @@ public class WindowsJniLoader {
     if ( ! WINDOWS ) {
       return false;
     }
-    Path libFile = tmpdir.resolve("win-exec-" + version).resolve("windows_jni.dll");
+    Path libFile = tmpdir.resolve("wf-exec-" + version).resolve("windows_jni.dll");
     if ( ! exists(libFile) ) {
     	ClassLoader cl = WindowsJniLoader.class.getClassLoader();
     	try (InputStream is = cl.getResourceAsStream("META-INF/windows_jni.dll")) {
