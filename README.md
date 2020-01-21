@@ -29,13 +29,13 @@ Add the following to your POM's `<dependencies>` tag:
 <dependency>
     <groupId>io.webfolder</groupId>
     <artifactId>wf-exec</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.3</version>
 </dependency>
 ```
 
 Download
 --------
-[wf-exec-1.0.1.jar](https://repo1.maven.org/maven2/io/webfolder/wf-exec/1.0.1/wf-exec-1.0.1.jar) - 159 KB
+[wf-exec-1.0.3.jar](https://repo1.maven.org/maven2/io/webfolder/wf-exec/1.0.3/wf-exec-1.0.3.jar) - 159 KB
 
 Example
 -------
