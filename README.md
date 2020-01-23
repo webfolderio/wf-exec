@@ -1,7 +1,7 @@
 # wf-exec
 
 Process executor for Java which use [Win32 Job Objects](https://docs.microsoft.com/en-us/windows/win32/procthread/job-objects) on Windows platform.
-Unlike default process executor this library help you to kill child process when parent dies normally or abnormally.
+Unlike default process executor this library help you to kill child process when parent dies normally or abnormally (reaps all zombie/defunct process).
 
 [![AppVeyor](https://img.shields.io/appveyor/ci/WebFolder/wf-exec.svg?label=Windows)](https://ci.appveyor.com/project/WebFolder/wf-exec) [![License](https://img.shields.io/badge/license-Apache-blue.svg)](https://github.com/webfolderio/wf-exec/blob/master/LICENSE)
 
