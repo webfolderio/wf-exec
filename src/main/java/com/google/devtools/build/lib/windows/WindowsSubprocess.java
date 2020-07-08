@@ -24,6 +24,7 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.google.devtools.build.lib.guava.Throwables;
 import com.google.devtools.build.lib.shell.Subprocess;
 import com.google.devtools.build.lib.windows.jni.WindowsProcesses;
 
@@ -108,17 +109,20 @@ public class WindowsSubprocess implements Subprocess {
   }
 
   private static final AtomicInteger THREAD_SEQUENCE_NUMBER = new AtomicInteger(1);
-  private static final ExecutorService WAITER_POOL = Executors.newCachedThreadPool(
-      new ThreadFactory() {
-        @Override
-        public Thread newThread(Runnable runnable) {
-          Thread thread = new Thread(null, runnable,
-              "Windows-Process-Waiter-Thread-" + THREAD_SEQUENCE_NUMBER.getAndIncrement(),
-              16 * 1024);
-          thread.setDaemon(true);
-          return thread;
-        }
-      });
+  private static final ExecutorService WAITER_POOL =
+      Executors.newCachedThreadPool(
+          new ThreadFactory() {
+            @Override
+            public Thread newThread(Runnable runnable) {
+              Thread thread =
+                  new Thread(
+                      null,
+                      runnable,
+                      "Windows-Process-Waiter-Thread-" + THREAD_SEQUENCE_NUMBER.getAndIncrement());
+              thread.setDaemon(true);
+              return thread;
+            }
+          });
 
   private volatile long nativeProcess;
   private final OutputStream stdinStream;
@@ -203,9 +207,7 @@ public class WindowsSubprocess implements Subprocess {
     try {
       timedout = processFuture.get() == WaitResult.TIMEOUT;
     } catch (ExecutionException e) {
-      if (e.getCause() instanceof RuntimeException) {
-        throw (RuntimeException) e.getCause();
-      }
+      Throwables.throwIfUnchecked(e.getCause());
       // This should never happen, because waiterThreadFunc does not throw any
       // checked exceptions.
       throw new IllegalStateException("Unexpected exception", e);

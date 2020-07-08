@@ -34,7 +34,7 @@ public class WindowsJniLoader {
     // temporary directory location
   private static final Path tmpdir = get(getProperty("java.io.tmpdir")).toAbsolutePath();
 
-  private static final String version = "1.0.3";
+  private static final String version = "1.0.4";
 
   private static final String  OS_NAME = getProperty("os.name").toLowerCase(ENGLISH);
 
