@@ -19,7 +19,6 @@ build_script:
   - cd src\main\native
   - mkdir build && cd build
   - call "C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\VC\Auxiliary\Build\vcvars64.bat"
-  - cl -version
   - cmake -GNinja -DCMAKE_C_COMPILER="cl.exe" -DCMAKE_CXX_COMPILER="cl.exe" -DMSVC_TOOLSET_VERSION=141 -DCMAKE_BUILD_TYPE=Release ..
   - ninja
   - if not exist "..\..\resources\META-INF" mkdir -p "..\..\resources\META-INF"
