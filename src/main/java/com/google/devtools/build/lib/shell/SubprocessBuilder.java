@@ -17,7 +17,7 @@ package com.google.devtools.build.lib.shell;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -42,7 +42,7 @@ public class SubprocessBuilder {
 
   private final SubprocessFactory factory;
   private List<String> argv;
-  private Map<String, String> env;
+  private Map<String, String> env = Collections.emptyMap();
   private StreamAction stdoutAction;
   private File stdoutFile;
   private StreamAction stderrAction;
@@ -53,8 +53,12 @@ public class SubprocessBuilder {
 
   static SubprocessFactory defaultFactory = JavaSubprocessFactory.INSTANCE;
 
+  /**
+   * Sets the default factory class for creating subprocesses. Passing {@code null} resets it to the
+   * initial state.
+   */
   public static void setDefaultSubprocessFactory(SubprocessFactory factory) {
-    SubprocessBuilder.defaultFactory = factory;
+    SubprocessBuilder.defaultFactory = factory != null ? factory : JavaSubprocessFactory.INSTANCE;
   }
 
   public SubprocessBuilder() {
@@ -88,19 +92,16 @@ public class SubprocessBuilder {
    * @throws IllegalArgumentException if argv is empty, or its first element (which becomes
    *     this.argv[0]) is neither an absolute path nor just a single file name
    */
-  public SubprocessBuilder setArgv(Iterable<String> argv) {
-    this.argv = new ArrayList<String>();
-    argv.forEach(this.argv::add);
-    return this;
-  }
-
-  public SubprocessBuilder setArgv(String... argv) {
-    this.setArgv(Arrays.asList(argv));
+  public SubprocessBuilder setArgv(List<String> argv) {
+      if (argv == null || argv.isEmpty()) {
+          throw new IllegalArgumentException();
+      }
+    this.argv = new ArrayList<>(argv);
     return this;
   }
 
   public Map<String, String> getEnv() {
-    return env;
+    return Collections.unmodifiableMap(env);
   }
 
   /**

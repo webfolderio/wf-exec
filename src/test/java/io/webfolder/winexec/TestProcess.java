@@ -5,6 +5,7 @@ import static java.util.Locale.ENGLISH;
 import static org.junit.Assert.assertTrue;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -14,8 +15,8 @@ import com.google.devtools.build.lib.shell.JavaSubprocessFactory;
 import com.google.devtools.build.lib.shell.Subprocess;
 import com.google.devtools.build.lib.shell.SubprocessBuilder;
 import com.google.devtools.build.lib.shell.SubprocessFactory;
+import com.google.devtools.build.lib.windows.WindowsJniLoader;
 import com.google.devtools.build.lib.windows.WindowsSubprocessFactory;
-import com.google.devtools.build.lib.windows.jni.WindowsJniLoader;
 
 public class TestProcess {
 
@@ -35,7 +36,7 @@ public class TestProcess {
     SubprocessBuilder builder = new SubprocessBuilder(factory);
     builder.setWorkingDirectory(new File("."));
 
-    builder.setArgv("java.exe", "-version");
+    builder.setArgv(Arrays.asList("java.exe", "-version"));
 
     StringBuilder buffer = new StringBuilder();
 
@@ -50,7 +51,8 @@ public class TestProcess {
       }
     }
 
-    process.destroy();
+    process.destroyAndWait();
+    process.close();
 
     assertTrue(buffer.toString().toLowerCase(Locale.ENGLISH).contains("runtime"));
   }

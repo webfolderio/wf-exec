@@ -26,7 +26,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import com.google.devtools.build.lib.guava.Throwables;
 import com.google.devtools.build.lib.shell.Subprocess;
-import com.google.devtools.build.lib.windows.jni.WindowsProcesses;
 
 /**
  * A Windows subprocess backed by a native object.
@@ -69,6 +68,20 @@ public class WindowsSubprocess implements Subprocess {
 
     ProcessInputStream(long nativeStream) {
       this.nativeStream = nativeStream;
+    }
+
+    @Override
+    public int available() throws IOException {
+      if (nativeStream == WindowsProcesses.INVALID) {
+        throw new IllegalStateException("Stream already closed");
+      }
+
+      int result = WindowsProcesses.streamBytesAvailable(nativeStream);
+      if (result == -1) {
+        throw new IOException(WindowsProcesses.streamGetLastError(nativeStream));
+      }
+
+      return result;
     }
 
     @Override
@@ -195,6 +208,11 @@ public class WindowsSubprocess implements Subprocess {
   @Override
   public boolean finished() {
     return processFuture.isDone();
+  }
+
+  @Override
+  public boolean isAlive() {
+    return !processFuture.isDone();
   }
 
   @Override

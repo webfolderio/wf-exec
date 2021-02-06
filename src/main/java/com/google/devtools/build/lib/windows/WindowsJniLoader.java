@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-package com.google.devtools.build.lib.windows.jni;
+package com.google.devtools.build.lib.windows;
 
 import static java.lang.System.getProperty;
 import static java.lang.System.load;
@@ -34,7 +34,7 @@ public class WindowsJniLoader {
     // temporary directory location
   private static final Path tmpdir = get(getProperty("java.io.tmpdir")).toAbsolutePath();
 
-  private static final String version = "1.0.4";
+  private static final String version = "1.1.0";
 
   private static final String  OS_NAME = getProperty("os.name").toLowerCase(ENGLISH);
 
@@ -49,10 +49,10 @@ public class WindowsJniLoader {
     if ( ! WINDOWS ) {
       return false;
     }
-    Path libFile = tmpdir.resolve("wf-exec-" + version).resolve("windows_jni.dll");
+    Path libFile = tmpdir.resolve("wf-exec-" + version).resolve("wf-exec.dll");
     if ( ! exists(libFile) ) {
     	ClassLoader cl = WindowsJniLoader.class.getClassLoader();
-    	try (InputStream is = cl.getResourceAsStream("META-INF/windows_jni.dll")) {
+    	try (InputStream is = cl.getResourceAsStream("META-INF/wf-exec.dll")) {
     		if ( ! exists(libFile.getParent()) ) {
     			createDirectory(libFile.getParent());
     		}
@@ -65,7 +65,6 @@ public class WindowsJniLoader {
     	}
     }
     load(libFile.toString());
-    loaded = true;
-    return true;
+    return loaded = true;
   }
 }

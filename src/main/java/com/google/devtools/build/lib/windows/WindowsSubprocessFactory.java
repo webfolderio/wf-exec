@@ -14,13 +14,6 @@
 
 package com.google.devtools.build.lib.windows;
 
-import com.google.devtools.build.lib.shell.ShellUtils;
-import com.google.devtools.build.lib.shell.Subprocess;
-import com.google.devtools.build.lib.shell.SubprocessBuilder;
-import com.google.devtools.build.lib.shell.SubprocessBuilder.StreamAction;
-import com.google.devtools.build.lib.shell.SubprocessFactory;
-import com.google.devtools.build.lib.vfs.PathFragment;
-import com.google.devtools.build.lib.windows.jni.WindowsProcesses;
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -28,9 +21,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-/**
- * A subprocess factory that uses the Win32 API.
- */
+import com.google.devtools.build.lib.shell.ShellUtils;
+import com.google.devtools.build.lib.shell.Subprocess;
+import com.google.devtools.build.lib.shell.SubprocessBuilder;
+import com.google.devtools.build.lib.shell.SubprocessBuilder.StreamAction;
+import com.google.devtools.build.lib.shell.SubprocessFactory;
+import com.google.devtools.build.lib.vfs.PathFragment;
+
+/** A subprocess factory that uses the Win32 API. */
 public class WindowsSubprocessFactory implements SubprocessFactory {
   public static final WindowsSubprocessFactory INSTANCE = new WindowsSubprocessFactory();
 
@@ -40,7 +38,10 @@ public class WindowsSubprocessFactory implements SubprocessFactory {
 
     // DO NOT quote argv0, createProcess will do it for us.
     String argv0 = processArgv0(argv.get(0));
-    String argvRest = argv.size() > 1 ? escapeArgvRest(argv.subList(1, argv.size())) : "";
+    String argvRest =
+        argv.size() > 1
+            ? escapeArgvRest(argv.subList(1, argv.size()), argv0.equals("cmd.exe"))
+            : "";
     byte[] env = convertEnvToNative(builder.getEnv());
 
     String stdoutPath = getRedirectPath(builder.getStdout(), builder.getStdoutFile());
@@ -69,7 +70,7 @@ public class WindowsSubprocessFactory implements SubprocessFactory {
         builder.getTimeoutMillis());
   }
 
-  private String escapeArgvRest(List<String> argv) {
+  private static String escapeArgvRest(List<String> argv, boolean isCmd) {
     StringBuilder result = new StringBuilder();
     boolean first = true;
     for (String arg : argv) {
@@ -78,7 +79,11 @@ public class WindowsSubprocessFactory implements SubprocessFactory {
       } else {
         result.append(" ");
       }
-      result.append(ShellUtils.windowsEscapeArg(arg));
+      if (isCmd) {
+        result.append(arg);
+      } else {
+        result.append(ShellUtils.windowsEscapeArg(arg));
+      }
     }
     return result.toString();
   }
@@ -99,7 +104,7 @@ public class WindowsSubprocessFactory implements SubprocessFactory {
   private static String getRedirectPath(StreamAction action, File file) {
     switch (action) {
       case DISCARD:
-        return "NUL";  // That's /dev/null on Windows
+        return "NUL"; // That's /dev/null on Windows
 
       case REDIRECT:
         return file.getPath();

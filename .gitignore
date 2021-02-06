@@ -28,3 +28,5 @@ hs_err_pid*
 /bazel-2.0.0-windows-x86_64.exe
 /dependency-reduced-pom.xml
 /.classpath
+/src/main/native/build
+/src/main/resources/META-INF/wf-exec.dll

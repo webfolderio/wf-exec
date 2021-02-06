@@ -5,14 +5,15 @@ import static java.util.Locale.ENGLISH;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Scanner;
 
 import com.google.devtools.build.lib.shell.JavaSubprocessFactory;
 import com.google.devtools.build.lib.shell.Subprocess;
 import com.google.devtools.build.lib.shell.SubprocessBuilder;
 import com.google.devtools.build.lib.shell.SubprocessFactory;
+import com.google.devtools.build.lib.windows.WindowsJniLoader;
 import com.google.devtools.build.lib.windows.WindowsSubprocessFactory;
-import com.google.devtools.build.lib.windows.jni.WindowsJniLoader;
 
 public class Example {
 
@@ -31,7 +32,7 @@ public class Example {
 
     builder.setWorkingDirectory(new File("."));
 
-    builder.setArgv("java.exe", "-version");
+    builder.setArgv(Arrays.asList("java.exe", "-version"));
 
     StringBuilder buffer = new StringBuilder();
 
@@ -54,6 +55,7 @@ public class Example {
     }
 
     // close the native resources
+    process.destroyAndWait();
     process.close();
 
     System.out.println(buffer.toString());

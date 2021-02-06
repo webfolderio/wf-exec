@@ -4,10 +4,10 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>io.webfolder</groupId>
   <artifactId>wf-exec</artifactId>
-  <version>1.0.4</version>
+  <version>1.1.0</version>
   <name>wf-exec</name>
   <description>wf-exec</description>
-  <inceptionYear>2020</inceptionYear>
+  <inceptionYear>2021</inceptionYear>
   <url>https://github.com/webfolderio/wf-exec</url>
   <scm>
     <url>https://github.com/webfolderio/wf-exec.git</url>
@@ -19,7 +19,7 @@
       <roles>
         <role>developer</role>
       </roles>
-      <timezone>+2</timezone>
+      <timezone>+3</timezone>
     </developer>
   </developers>
   <build>
@@ -117,6 +117,12 @@
       <version>4.13.1</version>
       <scope>test</scope>
     </dependency>
+	<dependency>
+	    <groupId>com.google.truth</groupId>
+	    <artifactId>truth</artifactId>
+	    <version>1.1.2</version>
+	    <scope>test</scope>
+	</dependency>
   </dependencies>
   <properties>
     <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>

@@ -16,8 +16,8 @@ package com.google.devtools.build.lib.vfs;
 import java.io.IOException;
 
 import com.google.devtools.build.lib.guava.Splitter;
+import com.google.devtools.build.lib.windows.WindowsFileOperations;
 import com.google.devtools.build.lib.windows.WindowsShortPath;
-import com.google.devtools.build.lib.windows.jni.WindowsFileOperations;
 
 class WindowsOsPathPolicy implements OsPathPolicy {
 

@@ -16,7 +16,14 @@ environment:
     - JAVA_HOME: C:\Program Files\Java\jdk1.8.0
 
 build_script:
-  - mvn -DskipTests -q clean package
+  - cd src\main\native
+  - mkdir build && cd build
+  - cmake -GNinja -DCMAKE_BUILD_TYPE=Release ..
+  - ninja
+  - if not exist "..\..\resources\META-INF" mkdir -p "..\..\resources\META-INF"
+  - copy wf-exec.dll "..\..\resources\META-INF"
+  - cd ..\..\..\..
+  - mvn -B -DskipTests -q clean package
 
 test_script:
   - mvn -q surefire-report:report
