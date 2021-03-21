@@ -26,7 +26,6 @@ import com.google.devtools.build.lib.shell.Subprocess;
 import com.google.devtools.build.lib.shell.SubprocessBuilder;
 import com.google.devtools.build.lib.shell.SubprocessBuilder.StreamAction;
 import com.google.devtools.build.lib.shell.SubprocessFactory;
-import com.google.devtools.build.lib.vfs.PathFragment;
 
 /** A subprocess factory that uses the Win32 API. */
 public class WindowsSubprocessFactory implements SubprocessFactory {
@@ -89,16 +88,7 @@ public class WindowsSubprocessFactory implements SubprocessFactory {
   }
 
   public static String processArgv0(String argv0) {
-    // Normalize the path and make it Windows-style.
-    // If argv0 is at least MAX_PATH (260 chars) long, createNativeProcess calls GetShortPathNameW
-    // to obtain a 8dot3 name for it (thereby support long paths in CreateProcessA), but then argv0
-    // must be prefixed with "\\?\" for GetShortPathNameW to work, so it also must be an absolute,
-    // normalized, Windows-style path.
-    // Therefore if it's absolute, then normalize it also.
-    // If it's not absolute, then it cannot be longer than MAX_PATH, since MAX_PATH also limits the
-    // length of file names.
-    PathFragment argv0fragment = PathFragment.create(argv0);
-    return argv0fragment.isAbsolute() ? argv0fragment.getPathString().replace('/', '\\') : argv0;
+	  return argv0;
   }
 
   private static String getRedirectPath(StreamAction action, File file) {

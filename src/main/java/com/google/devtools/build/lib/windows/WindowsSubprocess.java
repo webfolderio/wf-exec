@@ -24,7 +24,6 @@ import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.google.devtools.build.lib.guava.Throwables;
 import com.google.devtools.build.lib.shell.Subprocess;
 
 /**
@@ -225,7 +224,6 @@ public class WindowsSubprocess implements Subprocess {
     try {
       timedout = processFuture.get() == WaitResult.TIMEOUT;
     } catch (ExecutionException e) {
-      Throwables.throwIfUnchecked(e.getCause());
       // This should never happen, because waiterThreadFunc does not throw any
       // checked exceptions.
       throw new IllegalStateException("Unexpected exception", e);
